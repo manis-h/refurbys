@@ -1,0 +1,86 @@
+import multer from "multer";
+import Mobile from "./models/mobileModel";
+import formidable from "formidable";
+import uploadImages from "./upload";
+// import uploadImages, { upload } from "./upload";
+// upload = multer({ dest: "uploads/" + req.body.brand });
+export const config = {
+  api: {
+    bodyParser: false,
+    urlencoded: true,
+  },
+};
+
+export default async function uploadProducts(req, res) {
+  console.log(req?.query?.brand, req?.query?.model);
+  const upload = multer({
+    dest: `uploads/${req?.query?.brand}-${req?.query?.model}`,
+  });
+  // const upload = multer({ dest: "uploads/phone" });
+  upload.fields([{ name: "files", maxCount: 5 }])(req, res, async (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json({ error: "Multer error" });
+    } else if (err) {
+      return res.status(500).json({ error: "Unknown error" });
+    }
+    const files = req.files;
+    // console.log(req.file, "file");
+    // console.log(req.files, "files");
+    if (!files) {
+      return res.status(400).json({ error: "No file provided" });
+    }
+
+    try {
+      console.log("File uploaded successfully");
+    } catch (error) {
+      console.error("Error saving file:", error);
+      return res.status(500).json({ error: "Error saving file" });
+    }
+  });
+
+  const data = await new Promise((resolve, reject) => {
+    const form = formidable({});
+
+    form.parse(req, (err, fields, files) => {
+      if (err) reject({ err });
+      resolve({ err, fields, files });
+    });
+  });
+  let { brand, model, storageSpace, ram, colors, description } = data?.fields;
+
+  const mobile = new Mobile({
+    brand: brand[0],
+    model: model[0],
+    storageSpace: storageSpace[0],
+    // ram,
+    colors: colors[0],
+    description,
+    images: data?.files?.files,
+  });
+
+  // uploadImages(req, res);
+  console.log("done----------------->");
+  console.log(req.fields);
+  console.log(req.files);
+
+  // const data = await req.formData();
+  // const username = req.get("brand");
+  // const password = req.get("model");
+  //
+
+  //   await mobile.save();
+  // const mobile = await Mobile.findOne({});
+  // console.log(mobile);
+  // await mobile.save();
+  return res.status(200).json({
+    images: data?.files?.files,
+    brand,
+    model,
+    storageSpace,
+    ram,
+    colors,
+    description,
+    mobile,
+    message: "Successfully Uploaded Mobile Model",
+  });
+}
