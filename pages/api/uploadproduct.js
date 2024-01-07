@@ -2,6 +2,7 @@ import multer from "multer";
 import Mobile from "./models/mobileModel";
 import formidable from "formidable";
 import uploadImages from "./upload";
+import { db } from "./middleware/db";
 // import uploadImages, { upload } from "./upload";
 // upload = multer({ dest: "uploads/" + req.body.brand });
 export const config = {
@@ -12,6 +13,7 @@ export const config = {
 };
 
 export default async function uploadProducts(req, res) {
+  db();
   console.log(req?.query?.brand, req?.query?.model);
   const upload = multer({
     dest: `uploads/${req?.query?.brand}-${req?.query?.model}`,
@@ -57,21 +59,12 @@ export default async function uploadProducts(req, res) {
     description,
     images: data?.files?.files,
   });
+  await mobile.save();
 
-  // uploadImages(req, res);
   console.log("done----------------->");
   console.log(req.fields);
   console.log(req.files);
 
-  // const data = await req.formData();
-  // const username = req.get("brand");
-  // const password = req.get("model");
-  //
-
-  //   await mobile.save();
-  // const mobile = await Mobile.findOne({});
-  // console.log(mobile);
-  // await mobile.save();
   return res.status(200).json({
     images: data?.files?.files,
     brand,

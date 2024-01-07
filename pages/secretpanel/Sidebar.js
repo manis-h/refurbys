@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-export default function Sidebar() {
+export default function Sidebar({ setActiveState }) {
   return (
     <>
       <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
@@ -16,14 +16,14 @@ export default function Sidebar() {
             class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
             id="menu"
           >
-            <li class="nav-item">
+            <li onClick={() => setActiveState(0)} class="nav-item">
               <a href="#" class="nav-link align-middle px-0">
                 <i class="fs-4 bi-house"></i>{" "}
                 <span class="ms-1 d-none d-sm-inline">Upload Products</span>
               </a>
             </li>
 
-            <li>
+            <li onClick={() => setActiveState(1)}>
               <a
                 href="#submenu1"
                 data-bs-toggle="collapse"

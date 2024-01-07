@@ -1,18 +1,20 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import UploadPanel from "./UploadPanel";
+import Inventory from "./Inventory";
 // import Sidebar from "./Sidebar";
 // import Uploadproducts from "./Uploadproducts";
-
 export default function page() {
+  const [activeState, setActiveState] = useState(0);
   return (
     <div>
       <div class="container-fluid">
         <div class="row flex-nowrap">
-          <Sidebar />
+          <Sidebar setActiveState={setActiveState} />
           <div class="col py-3">
-            <UploadPanel />
+            {activeState == 0 && <UploadPanel />}
+            {activeState == 1 && <Inventory />}
             <h3>Left Sidebar with Submenus</h3>
             <p class="lead">
               An example 2-level sidebar with collasible menu items. The menu
