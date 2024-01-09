@@ -49,10 +49,10 @@ export default async function uploadProducts(req, res) {
     });
   });
   let { brand, model, storageSpace, ram, colors, description } = data?.fields;
-  const images = req?.files?.files?.map((i) => {
+  const images = await req?.files?.files?.map((i) => {
     return {
       name: i?.filename,
-      path: i?.destination,
+      path: "public/uploads/${req?.query?.brand}-${req?.query?.model}/${i?.filename}",
     };
   });
   const mobile = new Mobile({
