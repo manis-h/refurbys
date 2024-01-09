@@ -16,9 +16,9 @@ export default async function uploadProducts(req, res) {
   db();
   console.log(req?.query?.brand, req?.query?.model);
   const upload = multer({
-    dest: `uploads/${req?.query?.brand}-${req?.query?.model}`,
+    dest: `public/uploads/${req?.query?.brand}-${req?.query?.model}`,
   });
-  // const upload = multer({ dest: "uploads/phone" });
+  // const upload = multer({ dest: "public/uploads/phone" });
   upload.fields([{ name: "files", maxCount: 5 }])(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(500).json({ error: "Multer error" });
@@ -57,7 +57,7 @@ export default async function uploadProducts(req, res) {
     // ram,
     colors: colors[0],
     description,
-    images: data?.files?.files,
+    images: req?.files,
   });
   await mobile.save();
 
