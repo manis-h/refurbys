@@ -57,18 +57,25 @@ export default async function uploadProducts(req, res) {
     // ram,
     colors: colors[0],
     description,
-    images: req?.files,
+    images: req?.files?.files,
   });
-  await mobile.save();
+  // await mobile.save();
 
   console.log("done----------------->");
   console.log(req.fields);
   console.log(req.files);
-
+  const images = req?.files?.files?.map((i) => {
+    return {
+      name: i?.filename,
+      path: i?.destination,
+    };
+  });
+  console.log({ images });
   return res.status(200).json({
     images: data?.files?.files,
     brand,
     model,
+    images,
     storageSpace,
     ram,
     colors,
