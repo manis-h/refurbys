@@ -7,6 +7,7 @@ import Inventory from "./Inventory";
 // import Uploadproducts from "./Uploadproducts";
 export default function page() {
   const [activeState, setActiveState] = useState(0);
+
   return (
     <div>
       <div class="container-fluid">
