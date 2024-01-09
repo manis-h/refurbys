@@ -52,7 +52,7 @@ export default async function uploadProducts(req, res) {
   const images = await req?.files?.files?.map((i) => {
     return {
       name: i?.filename,
-      path: "public/uploads/${req?.query?.brand}-${req?.query?.model}/${i?.filename}",
+      path: `public/uploads/${req?.query?.brand}-${req?.query?.model}/${i?.filename}`,
     };
   });
   const mobile = new Mobile({
