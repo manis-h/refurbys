@@ -125,8 +125,7 @@ export default function UploadPanel() {
                     onChange={(e) => {
                       setForm({
                         ...form,
-
-                        colors: e.target.value.split(" "),
+                        colors: e.target.value.split(","),
                       });
                     }}
                     isMulti
@@ -143,7 +142,7 @@ export default function UploadPanel() {
                       setForm({
                         ...form,
 
-                        storage: e.target.value.split(" "),
+                        storage: e.target.value.split(","),
                       });
                     }}
                     isMulti

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import EditProducts from "../../Components/EditProducts";
 
 export default function Inventory() {
   const [data, setData] = useState();
@@ -6,9 +8,19 @@ export default function Inventory() {
     const response = await fetch("/api/getproducts");
     setData(await response.json());
   };
+  const deleteproducts = async (id) => {
+    const response = await fetch(`/api/deleteproduct?id=${id}`);
+    getproducts();
+  };
   useEffect(() => {
     getproducts();
   }, []);
+  const [selectedItem, setSelectedItem] = useState();
+  useEffect(() => {
+    selectedItem && setEditOpen(true);
+    console.log({ selectedItem });
+  }, [selectedItem]);
+  const [openEdit, setEditOpen] = useState();
   return (
     <div>
       Inventory
@@ -17,7 +29,7 @@ export default function Inventory() {
           <div class="row g-0">
             <div class="col-md-4">
               <img
-                src={i?.filePath + "/" + i?.newFilename}
+                src={`uploads/${i?.brand}-${i?.model}/${i?.images?.[0]?.name}`}
                 class="img-fluid rounded-start"
                 alt="..."
               />
@@ -27,13 +39,27 @@ export default function Inventory() {
                 <h5 class="card-title">
                   {i.brand} {i?.model}
                 </h5>
-                <p class="card-text">
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
-                </p>
-                <p class="card-text">
-                  <small class="text-muted">Last updated 3 mins ago</small>
+                <p className="card-text fw-bold">Brand- &nbsp;{i.brand}</p>
+
+                <p className="card-text fw-bold">Model- &nbsp;{i.model}</p>
+                <div>
+                  <span
+                    className="mx-2 text-primary"
+                    onClick={() => {
+                      setSelectedItem(i);
+                    }}
+                  >
+                    Edit
+                  </span>
+                  <span
+                    onClick={() => deleteproducts(i?._id)}
+                    classname="mx-2 text-danger"
+                  >
+                    Delete
+                  </span>
+                </div>
+                <p class="card-text my-1">
+                  <small class="btn btn-primary ">Manage Inventory</small>
                 </p>
               </div>
             </div>
