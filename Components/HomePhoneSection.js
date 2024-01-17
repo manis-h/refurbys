@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import Phonetile from "./Phonetile";
+import Link from "next/link";
+import { useEffect } from "react";
 
 export default function HomePhoneSection() {
+  const [data, setData] = useState();
+  const getproducts = async () => {
+    const response = await fetch("/api/getproducts");
+    setData(await response.json());
+  };
+  useEffect(() => {
+    getproducts();
+  }, []);
   return (
     <div>
       <div className="mx-2 my-5">
         <h1
-          className=" "
+          className=" text-center"
           style={{
             color: "#56aa49",
             textShadow:
@@ -15,40 +25,21 @@ export default function HomePhoneSection() {
         >
           Buy Refurbished Phones
         </h1>
-        <p className="text-success">View all</p>
+        <p className="text-success text-end px-2 mx-5">View all</p>
       </div>
       <div
         className="flex flex-1 text-center justify-content-center"
         style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
       >
-        <Phonetile
-          name={"Xiaomi Redmi 9 power"}
-          src={
-            "https://s3no.cashify.in/cashify/store/product//49a0b0f237eb4c0ab7393b3ae74f14d9.jpg?p=es5sq&s=es"
-          }
-          price={9000}
-        />
-        <Phonetile
-          name={"Xiaomi Redmi 9 power"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/3f9faaa0-6bb8.jpg?p=es3sq&s=ess"
-          }
-          price={9000}
-        />
-        <Phonetile
-          name={"Xiaomi Redmi 9 power"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/3f9faaa0-6bb8.jpg?p=es3sq&s=ess"
-          }
-          price={9000}
-        />
-        <Phonetile
-          name={"Xiaomi Redmi 9 power"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/3f9faaa0-6bb8.jpg?p=es3sq&s=ess"
-          }
-          price={9000}
-        />
+        {data?.data?.map((i) => (
+          <Phonetile
+            brand={i?.brand}
+            model={i?.model}
+            name={`${i?.brand} ${i?.model}`}
+            src={i?.images?.[0]}
+            price={i?.variants[0]?.discountedPrice}
+          />
+        ))}
       </div>
     </div>
   );

@@ -1,45 +1,60 @@
-import React, { useState } from "react";
-
+"use client";
+import React, { useEffect, useState } from "react";
+import { UploadButton } from "@bytescale/upload-widget-react";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+} from "@firebase/storage";
+import { v4 } from "uuid";
+import { storage } from "../index";
 export default function page() {
-  const [file, setFile] = useState([]);
+  const [file, setFile] = useState();
+  const [imgArray, setImageArray] = useState([]);
 
-  const handleFileChange = (event) => {
-    setFile([...file, event.target.files[0]]);
+  const handleSubmit = () => {
+    const imgRef = ref(storage, `files/${v4()}`);
+    uploadBytes(imgRef, file);
   };
+  const deleteFile = (path) => {
+    const desertRef = ref(storage, path);
 
-  const handleUpload = async () => {
-    const formData = new FormData();
-    file?.map((i) => {
-      formData.append(`files`, i);
-    });
-    formData.append("brand", "Xiaomi");
-    console.log(formData.get("files"));
-    // file?.map((i) => {
-    //   formData.append(`file${index}`, i);
-    // });
+    // Delete the file
+    deleteObject(desertRef)
+      .then(() => {
+        console.log("File deleted successfully");
 
-    try {
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
+        // getItems();
+      })
+      .catch((error) => {
+        console.log(error);
+        // Uh-oh, an error occurred!
       });
-
-      const data = await response.json();
-      console.log(data);
-
-      // Optionally, display a success message or handle the response accordingly
-    } catch (error) {
-      console.error("Error uploading file:", error);
-    }
   };
-
+  const getItems = () => {
+    setImageArray();
+    listAll(ref(storage, "files")).then((imgs) => {
+      console.log(imgs?.items);
+      imgs?.items?.map((val) => {
+        getDownloadURL(val).then((url) => {
+          console.log(url);
+          setImageArray((data) => [...data, url]);
+        });
+      });
+    });
+  };
+  useEffect(() => {
+    getItems();
+  }, []);
   return (
     <div>
-      <input type="file" onChange={handleFileChange} />
-      <input type="file" onChange={handleFileChange} />
-      <input type="file" onChange={handleFileChange} />
-
-      <button onClick={handleUpload}>Upload</button>
+      <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      <button onClick={handleSubmit}>Submit</button>
+      {imgArray?.map((i) => (
+        <img onClick={() => deleteFile(i)} src={i} />
+      ))}
     </div>
   );
 }

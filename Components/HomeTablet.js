@@ -6,7 +6,7 @@ export default function HomeTablet() {
     <div>
       <div className="mx-2 my-5">
         <h1
-          className=" "
+          className="text-center "
           style={{
             color: "#56aa49",
             textShadow:
@@ -15,7 +15,7 @@ export default function HomeTablet() {
         >
           Buy Refurbished tablet
         </h1>
-        <p className="text-success">View all</p>
+        <p className="text-success text-end px-2 mx-5">View all</p>
       </div>
       <div
         className="flex flex-1 text-center justify-content-center"

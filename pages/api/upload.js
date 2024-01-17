@@ -1,4 +1,6 @@
+import formidable from "formidable";
 import multer from "multer";
+import { arrayBuffer } from "stream/consumers";
 // import { NextApiRequest, NextApiResponse } from "next";
 
 export const config = {
@@ -7,37 +9,20 @@ export const config = {
     urlencoded: true,
   },
 };
+import { createUploadthing } from "uploadthing/next-legacy";
+
+const f = createUploadthing();
 
 export default async function uploadImages(req, res, folder) {
-  console.log({ body: req?.fields });
-  const upload = multer({ dest: "uploads/" + req?.fields?.brand });
+  imageUploader: f({ image: { maxFileSize: "4MB" } }).onUploadComplete(
+    async ({ metadata, file }) => {
+      // This code RUNS ON YOUR SERVER after upload
+      console.log("Upload complete for userId:", "metadata.userId");
 
-  console.log(req.file, "sfile");
-  console.log(req.files, "sfiles");
+      console.log("file url", "file.url");
 
-  upload.fields([{ name: "files", maxCount: 5 }])(req, res, async (err) => {
-    if (err instanceof multer.MulterError) {
-      return res.status(500).json({ error: "Multer error" });
-    } else if (err) {
-      return res.status(500).json({ error: "Unknown error" });
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: "metadata.userId" };
     }
-    const files = req.files;
-    console.log(req.file, "file");
-    console.log(req.files, "files");
-    if (!files) {
-      return res.status(400).json({ error: "No file provided" });
-    }
-
-    try {
-      // You can perform additional processing here (e.g., save to a database, etc.)
-      console.log("File uploaded successfully");
-      // return res.status(200).json({
-      //   lol: "lol",
-      //   message: "File uploaded successfully",
-      // });
-    } catch (error) {
-      console.error("Error saving file:", error);
-      return res.status(500).json({ error: "Error saving file" });
-    }
-  });
+  );
 }

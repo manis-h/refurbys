@@ -6,7 +6,7 @@ export default function OurServics() {
   return (
     <div className="">
       <h1
-        className="mx-2 my-5"
+        className="text-center my-5"
         style={{
           color: "#56aa49",
           textShadow:

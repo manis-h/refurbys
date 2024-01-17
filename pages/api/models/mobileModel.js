@@ -5,16 +5,13 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   brand: {
     type: String,
-    // required: true,
+    required: true,
   },
   model: {
     type: String,
-    // required: true,
+    required: true,
   },
-  storageSpace: [
-    { type: String },
-    // required: true,
-  ],
+  storageSpace: { type: [], required: true },
   // ram: [
   //   {
   //     type: String,
@@ -24,12 +21,15 @@ const userSchema = new mongoose.Schema({
   description: String,
   colors: { type: [], required: true },
   images: { type: [], required: true },
+
   variants: [
     {
-      // storage: { type: String, required: true },
-      // ram: { type: String, required: true },
-      // color: { type: String, required: true },
-      // condition: { type: String, required: true },
+      storage: { type: String, required: true },
+      color: { type: String, required: true },
+      condition: { type: String },
+      price: { type: Number, required: true },
+      discountedPrice: { type: Number },
+      qty: Number,
     },
   ],
 });

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities; */
 
+@import "~react-image-gallery/styles/css/image-gallery.css";
 video {
     position: absolute;
     top: 0;
@@ -10,3 +11,6 @@ video {
     min-height: 100%;
     z-index:-100;
   }
+  .offcanvas-backdrop {
+    display: none !important;
+}

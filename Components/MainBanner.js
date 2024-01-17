@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import ReactImageGallery from "react-image-gallery";
 // import ReactImageGallery from "react-image-gallery";
 // import ImageGallery from "react-image-gallery";
 
@@ -32,5 +33,9 @@ export default function MainBanner() {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  return <div></div>;
+  return (
+    <div>
+      <ReactImageGallery items={images} />
+    </div>
+  );
 }

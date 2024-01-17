@@ -1,48 +1,107 @@
 "use client";
-import React, { useState } from "react";
-import { FaPlusCircle } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaCross, FaPlusCircle, FaTrash } from "react-icons/fa";
 import { ImBin2 } from "react-icons/im";
 import FormTextEditor from "../../Components/FormTextEditor";
+import { storage } from "../index";
+import { v4 } from "uuid";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+} from "@firebase/storage";
 
 export default function UploadPanel() {
   const [value, setValue] = useState("");
-  const [file, setFile] = useState([]);
-  function handleChange(e) {
-    console.log(e.target.files);
-    // setPhotos([...photos, e.target.files[0]]);
-    setFile([...file, e.target.files[0]]);
-  }
-  const [images, setImages] = useState(3);
-  const [photos, setPhotos] = useState();
-  const [category, setCategory] = useState();
+  const [file, setFile] = useState();
   const [form, setForm] = useState({
     brand: "",
     model: "",
     storage: [],
     ram: [],
     colors: [],
+    price: "",
   });
+  const [imgArray, setImageArray] = useState([]);
+  const getItems = () => {
+    form?.brand &&
+      form?.model &&
+      listAll(ref(storage, `files/${form?.brand}/${form?.model}`)).then(
+        (imgs) => {
+          console.log(imgs?.items);
+          imgs?.items?.map((val) => {
+            getDownloadURL(val).then((url) => {
+              console.log(url);
+              setImageArray((data) => [...data, url]);
+            });
+          });
+        }
+      );
+  };
+  const deleteFile = (path) => {
+    const desertRef = ref(storage, path);
+
+    // Delete the file
+    deleteObject(desertRef)
+      .then(() => {
+        console.log("File deleted successfully");
+
+        // getItems();
+      })
+      .catch((error) => {
+        console.log(error);
+        // Uh-oh, an error occurred!
+      });
+  };
+  const SubmitImage = () => {
+    const imgRef = ref(storage, `files/${form?.brand}/${form?.model}${v4()}`);
+    uploadBytes(imgRef, file).then((val) => {
+      getDownloadURL(val.ref).then((url) => {
+        console.log(url);
+        setImageArray((data) => [...data, url]);
+      });
+    });
+  };
+  useEffect(() => {
+    getItems();
+  }, [form?.model, form?.brand]);
+  const [images, setImages] = useState(3);
+  const [photos, setPhotos] = useState();
+  const [category, setCategory] = useState();
   const [variants, setvariants] = useState(1);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log({ form });
-    const formData = new FormData();
-    // formData.append("files", file);
-    file?.map((i) => {
-      formData.append(`files`, i);
-    });
+    if (!category) alert("Please Enter a Category");
+    if (!form?.brand) alert("Please Enter Brand");
 
-    formData.append("brand", form?.brand);
-    formData.append("model", form?.model);
-    formData.append("storageSpace", form?.storage);
-    formData.append("colors", form?.colors);
+    if (!form?.model) alert("Please Enter Model");
+
+    if (!form?.colors) alert("Please Enter Colors");
+
+    if (!form?.storage) alert("Please Enter Storage");
+
+    // if (!form?.price) alert("Please Enter Price");
+    const body = {
+      brand: form?.brand.trim()?.toLocaleLowerCase(),
+      model: form?.model.trim()?.toLocaleLowerCase(),
+      storageSpace: form?.storage,
+      colors: form?.colors,
+      // images: imgArray,
+      category: category,
+      // price: form?.price,
+    };
+    console.log({ body });
+    // return;
     try {
       const response = await fetch(
         `/api/uploadproduct?brand=${form?.brand}&model=${form?.model}`,
         {
           method: "POST",
-          body: formData,
+          body: JSON.stringify(body),
         }
       );
 
@@ -65,6 +124,7 @@ export default function UploadPanel() {
           <div className="row my-4">
             <div class="form-floating">
               <select
+                onChange={(e) => setCategory(e.target.value)}
                 class="form-select"
                 id="floatingSelect"
                 aria-label="Floating label select example"
@@ -93,7 +153,7 @@ export default function UploadPanel() {
                   id="brand"
                   placeholder="name@example.com"
                 />
-                ;<label for="brand">Brand</label>
+                <label for="brand">Brand</label>
               </div>
             </div>
             <div className="col">
@@ -117,10 +177,10 @@ export default function UploadPanel() {
 
           {[...Array(variants)]?.map(() => (
             <div className="row">
-              <div className="col">
-                <div class="mb-3">
-                  <label for="brand">Colors</label>
+              <div className="col  ">
+                <div class="form-floating">
                   <input
+                    className="form-control"
                     type="text"
                     onChange={(e) => {
                       setForm({
@@ -131,13 +191,15 @@ export default function UploadPanel() {
                     isMulti
                     options={[]}
                   />
+                  <label for="brand">Colors</label>
                 </div>
+                {/* <div class="form-floating "></div>z */}
               </div>
               <div className="col">
-                <div class="mb-3">
-                  <label for="brand">Storage</label>
+                <div class="form-floating mb-3">
                   <input
                     type="text"
+                    className="form-control"
                     onChange={(e) => {
                       setForm({
                         ...form,
@@ -148,26 +210,33 @@ export default function UploadPanel() {
                     isMulti
                     options={[]}
                   />
+                  <label for="brand">Storage</label>
                 </div>
               </div>
 
-              <div className="col mt-3"></div>
+              {/* <div className="col ">
+                <div class="form-floating mb-3">
+                  <label for="brand">Price</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    onChange={(e) => {
+                      setForm({
+                        ...price,
+
+                        storage: e.target.value,
+                      });
+                    }}
+                    isMulti
+                    options={[]}
+                  />
+                </div>
+              </div> */}
             </div>
           ))}
 
           <div className="row">
-            <h1 className="text-center">
-              Upload Photos
-              <FaPlusCircle onClick={() => setImages(images + 1)} />
-            </h1>
-            {[...Array(images)]?.map(() => (
-              <div className="col m-4">
-                <input type="file" onChange={handleChange} />
-              </div>
-            ))}{" "}
-          </div>
-          <div className="row">
-            <button role="submit" classname="text-center">
+            <button role="submit" classname="text-center btn btn-lg">
               Submit
             </button>
           </div>

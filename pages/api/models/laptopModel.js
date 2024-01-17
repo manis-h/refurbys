@@ -5,6 +5,8 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  price: { type: String, required: true },
+
   model: {
     type: String,
     required: true,
@@ -20,13 +22,13 @@ const schema = new mongoose.Schema({
   description: String,
   images: { type: [], required: true },
   colors: { type: [], required: true },
-  variants: [
-    {
-      storage: { type: String, required: true },
-      ram: { type: String, required: true },
-      color: { type: String, required: true },
-    },
-  ],
+  // variants: [
+  //   {
+  //     storage: { type: String, required: true },
+  //     ram: { type: String, required: true },
+  //     color: { type: String, required: true },
+  //   },
+  // ],
 });
 const Laptop = mongoose.models.Laptop || mongoose.model("Laptop", schema);
 

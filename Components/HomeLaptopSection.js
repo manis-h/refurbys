@@ -6,7 +6,7 @@ export default function HomeLaptopSection() {
     <div>
       <div className="mx-2 my-5">
         <h1
-          className=" "
+          className="text-center"
           style={{
             color: "#56aa49",
             textShadow:
@@ -15,7 +15,7 @@ export default function HomeLaptopSection() {
         >
           Buy Refurbished Laptops
         </h1>
-        <p className="text-success">View all</p>
+        <p className="text-success text-end mx-5 px-2">View all</p>
       </div>
       <div
         className="flex flex-1 text-center justify-content-center"
