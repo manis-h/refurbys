@@ -4,7 +4,10 @@ import React from "react";
 export default function Phonetile({ brand, model, src, name, price }) {
   return (
     <div className="m-2 shadow-lg">
-      <Link href={`/mobiles/${brand}-${model}`}>
+      <Link
+        style={{ textDecoration: "none" }}
+        href={`/mobiles/${brand}-${model}`}
+      >
         <img
           style={{ maxHeight: "288px" }}
           src={src}

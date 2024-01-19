@@ -1,5 +1,7 @@
 import { db } from "./middleware/db";
+import Laptop from "./models/laptopModel";
 import Mobile from "./models/mobileModel";
+import Tablet from "./models/tabletModel";
 import User from "./models/userModel";
 
 // export default async function getproducts(req, res) {
@@ -12,10 +14,25 @@ import User from "./models/userModel";
 //   });
 // }
 export default async function getproducts(req, res) {
+  const { category } = req.query;
   db();
-  const data = await Mobile.find();
-  return res.status(200).json({
-    data,
-    message: "Successfully Uploaded Mobile Model",
-  });
+  if (category == "mobile") {
+    let data = await Mobile.find();
+    return res.status(200).json({
+      data,
+      message: "Product details",
+    });
+  } else if (category == "laptop") {
+    let data = await Laptop.find();
+    return res.status(200).json({
+      data,
+      message: "Product details",
+    });
+  } else if (category == "tablet") {
+    data = await Tablet.find();
+    return res.status(200).json({
+      data,
+      message: "Product details",
+    });
+  }
 }

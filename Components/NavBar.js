@@ -11,10 +11,10 @@ export default function NavBar() {
           <Link href="/">
             <span class="navbar-brand">
               <img
-                src="/logo/LOGO.jpg"
+                src="/logo/LOGO.png"
                 alt="Logo"
                 width={150}
-                class=" rounded shadow-lg d-inline-block align-text-top"
+                class=" rounded shadow-lg d-inline-block align-text-top p-3"
               />
             </span>
           </Link>

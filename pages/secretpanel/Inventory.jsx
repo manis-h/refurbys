@@ -15,12 +15,16 @@ import { v4 } from "uuid";
 export default function Inventory() {
   const [variants, setVariants] = useState({});
   const [variantarr, setvariantArr] = useState([]);
+  const [productType, setProductType] = useState("mobile");
   const [file, setFile] = useState();
   const [data, setData] = useState();
   const getproducts = async () => {
-    const response = await fetch("/api/getproducts");
+    const response = await fetch(`/api/getproducts?category=${productType}`);
     setData(await response.json());
   };
+  useEffect(() => {
+    getproducts();
+  }, [productType]);
   const [imageArray, setImageArray] = useState([]);
   const deleteproducts = async (id) => {
     const response = await fetch(`/api/deleteproduct?id=${id}`);
@@ -29,7 +33,7 @@ export default function Inventory() {
   const [selectedItem, setSelectedItem] = useState();
   useEffect(() => {
     setImageArray([]);
-    getproducts();
+    getItems();
     setvariantArr(selectedItem?.variants);
   }, [selectedItem]);
   useEffect(() => {
@@ -127,16 +131,24 @@ export default function Inventory() {
   return (
     <div>
       {/* Sidebar */}
-      <button
-        class="btn btn-primary"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
-      >
-        Toggle right offcanvas
-      </button>
       {/* /<!-- Modal --> */}
+      <div>Showing results for {productType}</div>
+      <div class="form-floating">
+        <select
+          class="form-select"
+          id="floatingSelect"
+          aria-label="Floating label select example"
+          onChange={(e) => {
+            setProductType(e.target.value);
+          }}
+        >
+          <option selected>Choose</option>
+          <option value="mobile">Mobile</option>
+          <option value="tablet">Tablet</option>
+          <option value="laptop">Laptop</option>
+        </select>
+        <label for="floatingSelect">Product Type</label>
+      </div>
       <div
         class="modal fade modal-lg"
         id="exampleModal"

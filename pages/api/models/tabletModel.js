@@ -13,18 +13,21 @@ const schema = new mongoose.Schema({
     type: [],
     required: true,
   },
-  ram: {
-    type: String,
-    required: true,
-  },
+  // ram: {
+  //   type: String,
+  //   required: true,
+  // },
   description: String,
   images: { type: [], required: true },
   colors: { type: [], required: true },
   variants: [
     {
       storage: { type: String, required: true },
-      ram: { type: String, required: true },
       color: { type: String, required: true },
+      condition: { type: String },
+      price: { type: Number, required: true },
+      discountedPrice: { type: Number },
+      qty: Number,
     },
   ],
 });

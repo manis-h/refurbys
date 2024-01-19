@@ -10,12 +10,15 @@ export default function Footer() {
             class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"
           >
             <img
-              src="/logo/LOGO.jpg"
-              className="w-75 shadow-lg rounded-2"
+              src="/logo/LOGO.png"
+              className="w-75 shadow-lg rounded-2 p-3"
               alt=""
             />
           </a>
-          <p class="text-body-secondary">Brand Tagline</p>
+          <p class="text-body-secondary">
+            sustainabliity focused online marketplace for refurbished laptop and
+            mobile phones
+          </p>
         </div>
 
         <div class="col mb-3"></div>

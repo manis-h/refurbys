@@ -9,8 +9,8 @@ export default function OurServics() {
         className="text-center my-5"
         style={{
           color: "#56aa49",
-          textShadow:
-            " -1px 0 lightgreen, 0 1px lightgreen, 1px 0 lightgreen, 0 -1px lightgreen",
+          // textShadow:
+          //   " -1px 0 lightgreen, 0 1px lightgreen, 1px 0 lightgreen, 0 -1px lightgreen",
         }}
       >
         Our Services

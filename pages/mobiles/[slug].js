@@ -25,6 +25,7 @@ export default function index() {
     getproduct();
   }, [router.query.slug]);
   useEffect(() => {
+    setImages([]);
     data?.mobile?.images?.map((i) => {
       setImages((prev) => [
         ...prev,
@@ -57,7 +58,7 @@ export default function index() {
               {data?.mobile?.model}{" "}
             </h5>
             <p className="text-secondary">
-              Cashify Warranty, Good, 4 GB / 64 GB, Black
+              Refurbys Warranty, Good, 4 GB / 64 GB, Black
             </p>
             <p className="text-danger">
               <FaDotCircle />
@@ -84,8 +85,14 @@ export default function index() {
             </span>
             <h4 className="my-lg-4">Storage</h4>
             <p>
-              {data?.mobile?.storageSpace?.map((i) => (
-                <button type="button" class="btn btn-outline-success">
+              {data?.mobile?.storageSpace?.map((i, index) => (
+                <button
+                  onChange={() =>
+                    setselectedVariant(data?.mobile?.variants[index])
+                  }
+                  type="button"
+                  class="btn btn-outline-success"
+                >
                   {i}
                 </button>
               ))}
