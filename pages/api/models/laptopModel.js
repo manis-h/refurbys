@@ -14,10 +14,10 @@ const schema = new mongoose.Schema({
     type: [],
     required: true,
   },
-  // ram: {
-  //   type: String,
-  //   required: true,
-  // },
+  slug: {
+    type: String,
+    required: true,
+  },
   description: String,
   images: { type: [], required: true },
   colors: { type: [], required: true },

@@ -1,5 +1,7 @@
 import React from "react";
 import Phonetile from "./Phonetile";
+import Slider from "react-slick";
+import { settings } from "./HomePhoneSection";
 
 export default function HomeTablet() {
   return (
@@ -19,50 +21,52 @@ export default function HomeTablet() {
       </div>
       <div
         className="flex flex-1 text-center justify-content-center"
-        style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+        // style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
       >
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Ipad Pro 2020"}
-          src={
-            "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
-          }
-          price={68000}
-        />
+        <Slider {...settings}>
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+          <Phonetile
+            name={"Ipad Pro 2020"}
+            src={
+              "https://s3n.cashify.in/cashify/product/img/xhdpi/e8e9a4e5-4197.jpg"
+            }
+            price={68000}
+          />
+        </Slider>
       </div>
     </div>
   );

@@ -40,6 +40,7 @@ export default function UploadPanel() {
         }
       );
   };
+
   const deleteFile = (path) => {
     const desertRef = ref(storage, path);
 
@@ -104,12 +105,23 @@ export default function UploadPanel() {
           body: JSON.stringify(body),
         }
       );
-
-      const data = await response.json();
-      console.log(data);
-
-      // Optionally, display a success message or handle the response accordingly
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data);
+        alert("uploaded successfully");
+        setForm({
+          brand: "",
+          model: "",
+          storage: [],
+          ram: [],
+          colors: [],
+          price: "",
+        });
+      } else {
+        console.log("error");
+      }
     } catch (error) {
+      // Optionally, display a success message or handle the response accordingly
       console.error("Error uploading file:", error);
     }
   };
@@ -129,9 +141,8 @@ export default function UploadPanel() {
                 id="floatingSelect"
                 aria-label="Floating label select example"
               >
-                <option value="mobile" selected>
-                  Mobile
-                </option>
+                <option value="">Select</option>
+                <option value="mobile">Mobile</option>
                 <option value="tablet">Tablet</option>
                 <option value="laptop">Laptop</option>
               </select>
@@ -142,6 +153,7 @@ export default function UploadPanel() {
             <div className="col">
               <div class="form-floating mb-3">
                 <input
+                  value={form?.brand || ""}
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -159,6 +171,7 @@ export default function UploadPanel() {
             <div className="col">
               <div class="form-floating">
                 <input
+                  value={form?.model || ""}
                   type="text"
                   class="form-control"
                   id="Model"
@@ -182,6 +195,7 @@ export default function UploadPanel() {
                   <input
                     className="form-control"
                     type="text"
+                    value={form?.colors || ""}
                     onChange={(e) => {
                       setForm({
                         ...form,
@@ -200,6 +214,7 @@ export default function UploadPanel() {
                   <input
                     type="text"
                     className="form-control"
+                    value={form?.storage || ""}
                     onChange={(e) => {
                       setForm({
                         ...form,

@@ -4,13 +4,31 @@ import Link from "next/link";
 import { useEffect } from "react";
 import CustomCarousel from "./CustomCarousel";
 import Slider from "react-slick";
-const settings = {
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
+
+export const settings = {
   dots: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
+  arrows: true,
+  autoplay: true,
+  autoplaySpeed: 5000,
+  // infinite: children?.length >= settings?.slidesToShow || children?.length >= 2,
+  speed: 1500,
+  slidesToShow: 4,
   slidesToScroll: 1,
+  nextArrow: <FaArrowAltCircleRight />,
+  prevArrow: <FaArrowAltCircleLeft />,
+  responsive: [
+    {
+      breakpoint: 767,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 1,
+      },
+    },
+  ],
 };
+
 export default function HomePhoneSection() {
   const [data, setData] = useState();
   const getproducts = async () => {
@@ -35,20 +53,24 @@ export default function HomePhoneSection() {
         </h1>
         <p className="text-success text-end px-2 mx-5">View all</p>
       </div>
+
       <div
-        className="flex flex-1 text-center justify-content-center"
-        style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+      // className="flex flex-1 text-center justify-content-center"
+      // style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
       >
-        {data?.data?.map((i, index) => (
-          <Phonetile
-            key={index}
-            brand={i?.brand}
-            model={i?.model}
-            name={`${i?.brand} ${i?.model}`}
-            src={i?.images?.[0]}
-            price={i?.variants[0]?.discountedPrice}
-          />
-        ))}
+        <Slider {...settings}>
+          {data?.data?.map((i, index) => (
+            <Phonetile
+              category={"mobiles"}
+              key={index}
+              brand={i?.brand}
+              model={i?.model}
+              name={`${i?.brand} ${i?.model}`}
+              src={i?.images?.[0]}
+              price={i?.variants[0]?.discountedPrice}
+            />
+          ))}
+        </Slider>
       </div>
     </div>
   );

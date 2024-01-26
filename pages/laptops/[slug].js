@@ -14,13 +14,10 @@ export default function index() {
   const arr = String(query).split("-");
   const [data, setData] = useState();
   const [slug, setSlug] = useState(arr);
-  const [selectMode, setSelectMode] = useState();
-  const [selectedStorage, setSelectedStorage] = useState();
-  const [selectedColor, setSelectedColor] = useState();
 
   const getproduct = async () => {
     const response = await fetch(
-      `/api/getsingleproduct?category=mobile&brand=${arr[0]}&model=${arr[1]}`
+      `/api/getsingleproduct?category=laptop&brand=${arr[0]}&model=${arr[1]}`
     );
     setData(await response.json());
   };
@@ -43,7 +40,7 @@ export default function index() {
   }, [data]);
 
   useEffect(() => {
-    console.log({ selectedvariant, hos: data?.data?.variants });
+    console.log({ selectedvariant, hos: data?.data?.variants[0] });
   }, [selectedvariant]);
 
   return (
@@ -90,15 +87,11 @@ export default function index() {
             <p>
               {data?.data?.storageSpace?.map((i, index) => (
                 <button
-                  onClick={() => {
-                    let newarr = data?.data?.variants.filter(
-                      (op) => i == op.storage
-                    );
-                    setselectedVariant(newarr[0]);
-                    setSelectedStorage(i);
-                  }}
+                  onChange={() =>
+                    setselectedVariant(data?.data?.variants[index])
+                  }
                   type="button"
-                  class="btn btn-outline-success mx-1"
+                  class="btn btn-outline-success"
                 >
                   {i}
                 </button>
@@ -111,7 +104,6 @@ export default function index() {
                 <button
                   type="button"
                   class="btn btn-outline-success text-uppercase mx-1"
-                  disabled={selectedvariant?.color !== i}
                 >
                   {i}
                 </button>

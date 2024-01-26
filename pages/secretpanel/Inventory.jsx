@@ -68,13 +68,11 @@ export default function Inventory() {
       });
   };
 
-  useEffect(() => {
-    getItems();
-  }, [selectedItem]);
   const uploadImages = async () => {
     const body = {
       id: selectedItem?._id,
       images: imageArray,
+      type: productType,
     };
     try {
       const response = await fetch(`/api/uploadimages`, {
@@ -84,7 +82,7 @@ export default function Inventory() {
 
       const data = await response.json();
       console.log(data);
-
+      getproducts();
       // Optionally, display a success message or handle the response accordingly
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -109,6 +107,7 @@ export default function Inventory() {
     const body = {
       id: selectedItem?._id,
       variants: variantarr,
+      type: productType,
     };
     try {
       const response = await fetch(`/api/addvariants`, {
@@ -155,6 +154,9 @@ export default function Inventory() {
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
+        onAbort={() => {
+          getproducts();
+        }}
       >
         <div class="modal-dialog">
           <div class="modal-content">
@@ -220,8 +222,8 @@ export default function Inventory() {
                       </span>
                     ))}
                   </div>
-                  <div className="row">
-                    {variantarr?.map((i, index) => (
+                  {variantarr?.map((i, index) => (
+                    <div className="row">
                       <>
                         <div className="col">
                           <div class="form-floating mb-3">
@@ -337,8 +339,21 @@ export default function Inventory() {
                             </label>
                           </div>
                         </div>
-                      </>
-                    ))}
+                        <div className="col-1">
+                          <FaTrash
+                            color="red"
+                            onClick={() => {
+                              setvariantArr(
+                                variantarr.splice(index, index + 1)
+                              );
+                            }}
+                            className="pointer"
+                          />
+                        </div>
+                      </>{" "}
+                    </div>
+                  ))}
+                  <div className="row">
                     <h5 className="text-center">
                       Add Available Variants <FaPlusCircle />
                     </h5>
@@ -351,6 +366,7 @@ export default function Inventory() {
                               qty: e.target.value,
                             })
                           }
+                          value={variants?.qty || ""}
                           type="number"
                           class="form-control"
                           id="qty"
@@ -368,6 +384,7 @@ export default function Inventory() {
                               price: e.target.value,
                             })
                           }
+                          value={variants?.price || ""}
                           type="number"
                           class="form-control"
                           id="Price"
@@ -385,6 +402,7 @@ export default function Inventory() {
                               discountedPrice: e.target.value,
                             })
                           }
+                          value={variants?.discountedPrice || ""}
                           type="number"
                           class="form-control"
                           id="Price"
@@ -402,14 +420,16 @@ export default function Inventory() {
                               storage: e.target.value,
                             })
                           }
+                          value={variants?.storage || ""}
                           class="form-select"
                           id="floatingSelect"
                           aria-label="Floating label select example"
                         >
+                          <option value="" selected={true}>
+                            Select
+                          </option>
                           {selectedItem?.storageSpace?.map((i) => (
-                            <option value={i} selected>
-                              {i}
-                            </option>
+                            <option value={i}>{i}</option>
                           ))}
                         </select>
                         <label for="floatingSelect">
@@ -426,14 +446,16 @@ export default function Inventory() {
                               color: e.target.value,
                             })
                           }
+                          value={variants?.color}
                           class="form-select"
                           id="floatingSelect"
                           aria-label="Floating label select example"
                         >
+                          <option value="" selected={true}>
+                            Select
+                          </option>
                           {selectedItem?.colors?.map((i) => (
-                            <option value={i} selected>
-                              {i}
-                            </option>
+                            <option value={i}>{i}</option>
                           ))}
                         </select>
                         <label for="floatingSelect">&nbsp; Select Color</label>

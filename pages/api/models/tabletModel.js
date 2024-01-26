@@ -20,6 +20,10 @@ const schema = new mongoose.Schema({
   description: String,
   images: { type: [], required: true },
   colors: { type: [], required: true },
+  slug: {
+    type: String,
+    required: true,
+  },
   variants: [
     {
       storage: { type: String, required: true },

@@ -18,12 +18,20 @@ export default async function getproducts(req, res) {
   db();
   if (category == "mobile") {
     let data = await Mobile.find();
+    // await data.map(async (i) => {
+    //   i.slug = `${i.brand}-${i.model}`;
+    //   console.log(i.slug);
+    // });
+    // console.log(data);
     return res.status(200).json({
       data,
       message: "Product details",
     });
   } else if (category == "laptop") {
     let data = await Laptop.find();
+    data.map((i) => {
+      i.slug = `${i.brand}-${i.model}`;
+    });
     return res.status(200).json({
       data,
       message: "Product details",

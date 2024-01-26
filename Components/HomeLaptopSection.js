@@ -1,7 +1,19 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Phonetile from "./Phonetile";
+import Slider from "react-slick";
+import { settings } from "./HomePhoneSection";
 
 export default function HomeLaptopSection() {
+  const [data, setData] = useState();
+  const getproducts = async () => {
+    const response = await fetch(`/api/getproducts?category=laptop`);
+    setData(await response.json());
+  };
+
+  useEffect(() => {
+    getproducts();
+  }, []);
   return (
     <div>
       <div className="mx-2 my-5">
@@ -19,36 +31,21 @@ export default function HomeLaptopSection() {
       </div>
       <div
         className="flex flex-1 text-center justify-content-center"
-        style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+        // style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
       >
-        <Phonetile
-          name={"Apple Macbook Pro 2020"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/72de0a25-b95e.jpg?p=es3sq&s=es"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Apple Macbook Pro 2020"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/72de0a25-b95e.jpg?p=es3sq&s=es"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Apple Macbook Pro 2020"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/72de0a25-b95e.jpg?p=es3sq&s=es"
-          }
-          price={68000}
-        />
-        <Phonetile
-          name={"Apple Macbook Pro 2020"}
-          src={
-            "https://s3no.cashify.in/cashify/product/img/xxhdpi/72de0a25-b95e.jpg?p=es3sq&s=es"
-          }
-          price={68000}
-        />
+        <Slider {...settings}>
+          {data?.data?.map((i, index) => (
+            <Phonetile
+              category={"laptops"}
+              key={index}
+              brand={i?.brand}
+              model={i?.model}
+              name={`${i?.brand} ${i?.model}`}
+              src={i?.images?.[0]}
+              price={i?.variants[0]?.discountedPrice}
+            />
+          ))}
+        </Slider>
       </div>
     </div>
   );
